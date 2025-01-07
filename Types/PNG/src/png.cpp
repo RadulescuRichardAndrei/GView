@@ -33,7 +33,7 @@ void CreateBufferView(Reference<GView::View::WindowInterface> win, Reference<PNG
         ColorPair{ Color::Yellow, Color::DarkBlue }
     };
 
-    auto& data = png->obj->GetData();
+    auto& data = png->GetObject()->GetData();
     uint64 offset = 0;
     uint32 colorIndex = 0;
 
@@ -71,14 +71,14 @@ void CreateBufferView(Reference<GView::View::WindowInterface> win, Reference<PNG
         }
     }
 
-    png->selectionZoneInterface = win->GetSelectionZoneInterfaceFromViewerCreation(settings);
+    png->SetSelectionZoneInterface(win->GetSelectionZoneInterfaceFromViewerCreation(settings));
 }
 
 void CreateImageView(Reference<GView::View::WindowInterface> win, Reference<PNG::PNGFile> png)
 {
     GView::View::ImageViewer::Settings settings;
     settings.SetLoadImageCallback(png.ToBase<View::ImageViewer::LoadImageInterface>());
-    settings.AddImage(0, png->obj->GetData().GetSize());
+    settings.AddImage(0, png->GetObject()->GetData().GetSize());
     win->CreateViewer(settings);
 }
 
