@@ -52,8 +52,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING 
-	    "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel." 
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
+	    "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
 	    FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
@@ -83,20 +83,20 @@ endforeach()
 if (MSVC)
     add_definitions(-DBUILD_FOR_WINDOWS)
     add_compile_options(-W3 /MP)
-    
+
 elseif (APPLE)
     add_definitions(-DBUILD_FOR_OSX)
     if (DEBUG_BUILD)
         add_compile_options(-g)
         add_compile_options(-W)
     endif()
-   
+
     SET(CMAKE_INSTALL_NAME_DIR @executable_path)
     message(STATUS "CMAKE_INSTALL_NAME_DIR => ${CMAKE_INSTALL_NAME_DIR}")
     SET(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
     SET(CMAKE_INSTALL_RPATH @executable_path)
     message(STATUS "CMAKE_INSTALL_RPATH => ${CMAKE_INSTALL_RPATH}")
-    
+
     if(CMAKE_LINK_LIBRARY_USING_weak_library_SUPPORTED)
         message(STATUS "${PROJECT_NAME} => CMAKE_LINK_LIBRARY_USING_weak_library_SUPPORTED")
     	target_link_libraries(${PROJECT_NAME} PRIVATE "$<LINK_LIBRARY:weak_library,lib,external>")
@@ -104,13 +104,13 @@ elseif (APPLE)
         message(STATUS "${PROJECT_NAME} => NOT CMAKE_LINK_LIBRARY_USING_weak_library_SUPPORTED")
     	# target_link_libraries(${PROJECT_NAME} PRIVATE lib external)
     endif()
-    
-    # install(TARGETS ${CURSES_LIBRARIES} LIBRARY DESTINATION "." NAMELINK_ONLY)    
+
+    # install(TARGETS ${CURSES_LIBRARIES} LIBRARY DESTINATION "." NAMELINK_ONLY)
 elseif (UNIX)
     add_definitions(-DBUILD_FOR_UNIX)
     add_compile_options(-g)
     add_compile_options(-W)
-    
+
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath -Wl,$ORIGIN")
 endif()
 
@@ -200,6 +200,7 @@ if(NOT DEFINED CMAKE_TESTING_ENABLED)
     add_subdirectory(Types/EML)
     add_subdirectory(Types/DOC)
 	  add_subdirectory(Types/JPG)
+    add_subdirectory(Types/PNG)
 
     # Generic plugins supported by GView
     add_subdirectory(GenericPlugins/CharacterTable)
@@ -208,7 +209,7 @@ if(NOT DEFINED CMAKE_TESTING_ENABLED)
     add_subdirectory(GenericPlugins/EntropyVisualizer)
     add_subdirectory(GenericPlugins/Dropper)
     add_subdirectory(GenericPlugins/Unpacker)
-                                                                    
+
     if (APPLE)
             set_property(TARGET "${PROJECT_NAME}" PROPERTY INSTALL_RPATH "@loader_path")
     elseif (UNIX)

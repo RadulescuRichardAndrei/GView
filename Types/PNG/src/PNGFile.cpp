@@ -1,4 +1,5 @@
 #include "png.hpp"
+#include "cstring"
 
 using namespace GView::Type::PNG;
 

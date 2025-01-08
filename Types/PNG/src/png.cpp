@@ -28,7 +28,7 @@ PLUGIN_EXPORT TypeInterface* CreateInstance()
 void CreateBufferView(Reference<GView::View::WindowInterface> win, Reference<PNG::PNGFile> png)
 {
     BufferViewer::Settings settings;
-    const auto& data = png->obj->GetData();
+    auto& data = png->obj->GetData();
     const uint64 dataSize = data.GetSize();
 
     // PNG Header (first 8 bytes)
