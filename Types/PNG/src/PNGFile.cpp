@@ -1,5 +1,4 @@
 #include "png.hpp"
-#include "cstring"
 
 using namespace GView::Type::PNG;
 
@@ -35,7 +34,7 @@ bool PNGFile::Update()
         if (chunk.length > 0)
         {
             chunk.data.resize(chunk.length);
-            CHECK(data.Copy(offset + 8, chunk.data.data(), chunk.length), false, "Failed to copy chunk data");
+            CHECK(data.Copy(offset + 8, chunk.data), false, "Failed to copy chunk data");
         }
 
         // Read CRC
