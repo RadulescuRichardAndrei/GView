@@ -1,12 +1,13 @@
 #include "png.hpp"
 
-namespace GView::Type::PNG;
+using namespace GView::Type::PNG;
 
-PNGFile::PNGFile() : Object(nullptr), selectionZoneInterface(nullptr) {}
+
+PNGFile::PNGFile():selectionZoneInterface(nullptr) {}
 
 bool PNGFile::Update()
 {
-    if (this->obj.IsValid() == false)
+    if (this->obj->IsValid() == false)
         return false;
     return true;
 }

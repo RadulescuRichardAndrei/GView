@@ -25,6 +25,8 @@ namespace PNG
         uint8 interlaceMethod;
     };
 
+    #pragma pack(pop)
+
     class PNGFile : public TypeInterface, public View::ImageViewer::LoadImageInterface
     {
     public:
