@@ -10,7 +10,7 @@ namespace PNG
 {
 #pragma pack(push, 2)
 
-    constexpr uint32 PNG_SIGNATURE = 0x89504E47; // PNG signature
+    constexpr uint32 PNG_SIGNATURE = 0x474E5089; // PNG signature
     constexpr uint32 PNG_CHUNK_TYPE_IHDR = 0x49484452; // IHDR chunk type
     constexpr uint32 PNG_CHUNK_TYPE_IDAT = 0x49444154; // IDAT chunk type
     constexpr uint32 PNG_CHUNK_TYPE_IEND = 0x49454E44; // IEND chunk type
@@ -61,6 +61,17 @@ namespace PNG
             CHECK(index < selectionZoneInterface->GetSelectionZonesCount(), d, "");
 
             return selectionZoneInterface->GetSelectionZone(index);
+        }
+
+        
+        Reference<GView::Utils::SelectionZoneInterface> GetSelectionZoneInterface()
+        {
+            return selectionZoneInterface;
+        }
+
+        void SetSelectionZoneInterface(Reference<GView::Utils::SelectionZoneInterface> interface)
+        {
+            selectionZoneInterface = interface;
         }
 
         bool UpdateKeys(KeyboardControlsInterface* interface) override
