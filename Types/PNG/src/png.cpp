@@ -78,21 +78,21 @@ void CreateBufferView(Reference<GView::View::WindowInterface> win, Reference<PNG
 
     png->SetSelectionZoneInterface(win->GetSelectionZoneInterfaceFromViewerCreation(settings));
 }
-/*
+
 void CreateImageView(Reference<GView::View::WindowInterface> win, Reference<PNG::PNGFile> png)
 {
     GView::View::ImageViewer::Settings settings;
     settings.SetLoadImageCallback(png.ToBase<View::ImageViewer::LoadImageInterface>());
-    settings.AddImage(0, png->GetObject()->GetData().GetSize());
+    settings.AddImage(0, win->GetObject()->GetData().GetSize());
     win->CreateViewer(settings);
 }
-*/
+
 PLUGIN_EXPORT bool PopulateWindow(Reference<GView::View::WindowInterface> win)
 {
     auto png = win->GetObject()->GetContentType<PNG::PNGFile>();
     png->Update();
 
-    //CreateImageView(win, png);
+    CreateImageView(win, png);
     CreateBufferView(win, png);
     win->AddPanel(Pointer<TabPage>(new PNG::Panels::Information(png)), true);
 

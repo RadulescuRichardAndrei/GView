@@ -12,6 +12,7 @@ bool PNGFile::Update()
         return false;
     return true;
     */
+
     return true;
 }
 

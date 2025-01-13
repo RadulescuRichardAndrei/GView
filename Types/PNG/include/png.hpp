@@ -23,6 +23,7 @@ namespace PNG
         uint8 compressionMethod;
         uint8 filterMethod;
         uint8 interlaceMethod;
+        bool IsValid() const;
     };
 
     #pragma pack(pop)
