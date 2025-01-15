@@ -20,19 +20,18 @@ void Panels::Information::UpdateGeneralInformation()
 
     general->DeleteAllItems();
     general->AddItem("File");
-    // size
-    general->AddItem({ "Size", tempStr.Format("%s bytes", n.ToString(png->obj->GetData().GetSize(), { NumericFormatFlags::None, 10, 3, ',' }).data()) });
-    // Size
-    const auto width  = Endian::BigToNative(png->header.width);
-    const auto height = Endian::BigToNative(png->header.height);
-    general->AddItem({ "Size", tempStr.Format("%u x %u", width, height) });
 
-    // extra info 
-    general->AddItem({ "Bit Depth", tempStr.Format("%u", png->header.bitDepth) });
-    general->AddItem({ "Color Type", tempStr.Format("%u", png->header.colorType) });
-    general->AddItem({ "Compression Method", tempStr.Format("%u", png->header.compressionMethod) });
-    general->AddItem({ "Filter Method", tempStr.Format("%u", png->header.filterMethod) });
-    general->AddItem({ "Interlace Method", tempStr.Format("%u", png->header.interlaceMethod) });
+    general->AddItem({ "Size", tempStr.Format("%s bytes", n.ToString(png->obj->GetData().GetSize(), { NumericFormatFlags::None, 10, 3, ',' }).data()) });
+
+    general->AddItem({ "Width", tempStr.Format("%u", png->ihdrChunk.width) });
+    general->AddItem({ "Height", tempStr.Format("%u", png->ihdrChunk.height) });
+
+    general->AddItem({ "Bit Depth", tempStr.Format("%u", png->ihdrChunk.bitDepth) });
+    general->AddItem({ "Color Type", tempStr.Format("%u", png->ihdrChunk.colorType) });
+
+    general->AddItem({ "Compression Method", tempStr.Format("%u", png->ihdrChunk.compressionMethod) });
+    general->AddItem({ "Filter Method", tempStr.Format("%u", png->ihdrChunk.filterMethod) });
+    general->AddItem({ "Interlace Method", tempStr.Format("%u", png->ihdrChunk.interlaceMethod) });
 }
 
 void Panels::Information::UpdateIssues()

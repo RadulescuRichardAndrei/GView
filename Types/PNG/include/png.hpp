@@ -10,12 +10,30 @@ namespace PNG
 {
 #pragma pack(push, 2)
 
-    constexpr uint32 PNG_SIGNATURE = 0x474E5089; // PNG signature
-    constexpr uint32 PNG_CHUNK_TYPE_IHDR = 0x49484452; // IHDR chunk type
-    constexpr uint32 PNG_CHUNK_TYPE_IDAT = 0x49444154; // IDAT chunk type
-    constexpr uint32 PNG_CHUNK_TYPE_IEND = 0x49454E44; // IEND chunk type
+    constexpr uint32 PNG_SIGNATURE = 0x474E5089;
+    constexpr uint32 CHUNK_TYPE_IHDR = 0x49484452;
+    constexpr uint32 CHUNK_TYPE_IEND = 0x49454E44;
+    constexpr uint32 CHUNK_TYPE_IDAT = 0x49444154;
+    constexpr uint32 CHUNK_TYPE_PLTE = 0x504C5445;
+    constexpr uint32 CHUNK_TYPE_tEXt = 0x74455874;
 
-    struct Header {
+     struct Header {
+        uint64 magic;
+    };
+
+    struct Chunk {
+        uint32 length;
+        uint32 type;
+        uint32 crc;
+        std::vector<uint8_t> data;
+
+        bool IsType(uint32 expectedType) const
+        {
+            return type == expectedType;
+        }
+    };
+
+    struct IHDRChunk {
         uint32 width;
         uint32 height;
         uint8 bitDepth;
@@ -23,6 +41,7 @@ namespace PNG
         uint8 compressionMethod;
         uint8 filterMethod;
         uint8 interlaceMethod;
+
         bool IsValid() const;
     };
 
@@ -32,6 +51,8 @@ namespace PNG
     {
     public:
         Header header{};
+        IHDRChunk ihdrChunk{};
+        std::vector<Chunk> chunks;
 
         Reference<GView::Utils::SelectionZoneInterface> selectionZoneInterface;
 
