@@ -1,4 +1,5 @@
 #include "png.hpp"
+#include <iostream>
 
 using namespace GView::Type::PNG;
 using namespace AppCUI::Controls;
@@ -22,9 +23,9 @@ void Panels::Information::UpdateGeneralInformation()
     general->AddItem("File");
 
     general->AddItem({ "Size", tempStr.Format("%s bytes", n.ToString(png->obj->GetData().GetSize(), { NumericFormatFlags::None, 10, 3, ',' }).data()) });
+    general->AddItem({ "IHDRChunk Size", tempStr.Format("%d bytes", sizeof(IHDRChunk)) });
 
-    general->AddItem({ "Width", tempStr.Format("%u", png->ihdrChunk.width) });
-    general->AddItem({ "Height", tempStr.Format("%u", png->ihdrChunk.height) });
+    general->AddItem({ "Size", tempStr.Format("%u x %u", png->ihdrChunk.width, png->ihdrChunk.height) });
 
     general->AddItem({ "Bit Depth", tempStr.Format("%u", png->ihdrChunk.bitDepth) });
     general->AddItem({ "Color Type", tempStr.Format("%u", png->ihdrChunk.colorType) });
@@ -36,6 +37,10 @@ void Panels::Information::UpdateGeneralInformation()
 
 void Panels::Information::UpdateIssues()
 {
+    AppCUI::Controls::ItemHandle itemHandle;
+    bool hasErrors   = false;
+    bool hasWarnings = false;
+    issues->DeleteAllItems();
 }
 
 void Panels::Information::RecomputePanelsPositions()
@@ -51,6 +56,7 @@ void Panels::Information::RecomputePanelsPositions()
     issues->SetVisible(false);
     this->general->Resize(w, h);
 }
+
 
 void Panels::Information::Update()
 {

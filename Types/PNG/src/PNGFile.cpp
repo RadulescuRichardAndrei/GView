@@ -2,12 +2,15 @@
 
 using namespace GView::Type::PNG;
 
+PNGFile::PNGFile()
+{
 
-PNGFile::PNGFile():selectionZoneInterface(nullptr) {}
+}
 
 bool PNGFile::Update()
 {
     memset(&header, 0, sizeof(header));
+
     ihdrChunk = {};
     chunks.clear();
 
@@ -17,23 +20,34 @@ bool PNGFile::Update()
     CHECK(header.magic == PNG_SIGNATURE, false, "Invalid PNG magic number");
 
     uint64 offset = sizeof(Header);
+
     while (offset < data.GetSize()) {
         Chunk chunk;
         CHECK(data.Copy<uint32>(offset, chunk.length), false, "Failed to copy chunk length");
         chunk.length = Endian::BigToNative(chunk.length);
-
         CHECK(data.Copy<uint32>(offset + 4, chunk.type), false, "Failed to copy chunk type");
 
         if (chunk.length > 0) {
             chunk.data.resize(chunk.length);
-            CHECK(data.Copy(offset + 8, chunk.data), false, "Failed to copy chunk data");
+            auto buffer = data.Get(offset + 8, chunk.length, true);
+            if (!buffer.IsValid())
+                return false;
+            memcpy(chunk.data.data(), buffer.GetData(), chunk.length);
         }
 
         CHECK(data.Copy<uint32>(offset + 8 + chunk.length, chunk.crc), false, "Failed to copy chunk CRC");
 
         if (chunk.IsType(CHUNK_TYPE_IHDR)) {
             CHECK(chunk.data.size() >= sizeof(IHDRChunk), false, "Invalid IHDR chunk size");
-            memcpy(&ihdrChunk, chunk.data.data(), sizeof(IHDRChunk));
+            auto buffer = data.Get(offset + 8, chunk.length, true);
+            memcpy(&ihdrChunk.width, buffer.GetData(), 4);
+            memcpy(&ihdrChunk.height, buffer.GetData() + 4, 4);
+            memcpy(&ihdrChunk.bitDepth, buffer.GetData() + 8, 1);
+            memcpy(&ihdrChunk.colorType, buffer.GetData() + 9, 1);
+            memcpy(&ihdrChunk.compressionMethod, buffer.GetData() + 10, 1);
+            memcpy(&ihdrChunk.filterMethod, buffer.GetData() + 11, 1);
+            memcpy(&ihdrChunk.interlaceMethod, buffer.GetData() + 12, 1);
+            
             ihdrChunk.width  = Endian::BigToNative(ihdrChunk.width);
             ihdrChunk.height = Endian::BigToNative(ihdrChunk.height);
         }
@@ -43,7 +57,6 @@ bool PNGFile::Update()
         if (chunk.IsType(CHUNK_TYPE_IEND)) {
             break;
         }
-
         offset += 12 + chunk.length;
     }
 

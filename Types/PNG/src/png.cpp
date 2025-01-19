@@ -1,4 +1,5 @@
 #include "png.hpp"
+#include <iostream>
 
 using namespace AppCUI;
 using namespace AppCUI::Utils;
@@ -12,7 +13,6 @@ using namespace GView::View;
 extern "C"
 {
     PLUGIN_EXPORT bool Validate(const AppCUI::Utils::BufferView& buf, const std::string_view& extension)
-
     {
         if (buf.GetLength() < sizeof(uint32)) {
             return false;
